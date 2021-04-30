@@ -2,6 +2,7 @@ import logging
 
 from nats.aio.client import Client as NatsClient
 
+from subscribers import NatsSubscriberBase
 from .argument_parser import ArgumentParserMixin
 from .async_service import AsyncServiceMixin
 from .logger import LoggerMixin
@@ -13,7 +14,7 @@ from .__version__ import __version__  # noqa
 __lang__ = 'python3'
 
 
-class NatsService(ArgumentParserMixin, MsgPackMixin, LoggerMixin, AsyncServiceMixin):
+class NatsServiceBase(ArgumentParserMixin, MsgPackMixin, LoggerMixin, AsyncServiceMixin):
     """
     Базовый класс для работы с NATS
 
@@ -70,16 +71,19 @@ class NatsService(ArgumentParserMixin, MsgPackMixin, LoggerMixin, AsyncServiceMi
         Получение обработчика для темы сообщения
 
         - Если тема есть в специальном словаре _nats_subject_handler, то брать оттуда.
-          - Если там указан класс, то указать его _message_handler
+          - Если там указан класс, который инициализируется с параметрами nats_client и async_loop, обработчик - метод message_handler
           - Если там указана функция, то брать её
         - Если нет, то заменить все . на _, вместо * писать __star__, вместо > писать __next__,
           впереди добавить _nats_handler_
         """
         if subject in self._nats_subject_handler:
-            if inspect.isclass(self._nats_subject_handler[subject]):
-                obj = self._nats_subject_handler[subject]()
-                self._nats_subject_handler[subject] = obj._message_handler
-            handler = self._nats_subject_handler[subject]
+            if isinstance(self._nats_subject_handler[subject], NatsSubscriberBase):
+                obj = self._nats_subject_handler[subject](nats_client=self.nats_client, async_loop=self.async_loop)
+                self._nats_subject_handler[subject] = obj.message_handler
+            elif inspect.isfunction(self._nats_subject_handler[subject]):
+                handler = self._nats_subject_handler[subject]
+            else:
+                raise TypeError(f'unknown "{subject}" handler (may be a function or a NatsScribeBase subclass')
         else:
             handler_name = '_nats_handler_' + subject.replace('.', '_').replace('*', '__star__').replace('>', '__next__')
             handler = getattr(self, handler_name)
