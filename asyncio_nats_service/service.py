@@ -74,6 +74,7 @@ class NatsServiceBase(ArgumentParserMixin, MsgPackMixin, LoggerMixin, AsyncServi
         - Если нет, то заменить все . на _, вместо * писать __star__, вместо > писать __next__,
           впереди добавить _nats_handler_
         """
+        handler = None
         if subject in self._nats_subject_handler:
             if isinstance(self._nats_subject_handler[subject], NatsSubscriberBase):
                 obj = self._nats_subject_handler[subject](nats_client=self.nats_client, async_loop=self.async_loop)
