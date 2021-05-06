@@ -1,15 +1,13 @@
-import logging
+import inspect
 
 from nats.aio.client import Client as NatsClient
 
-from subscribers import NatsSubscriberBase
+from __version__ import __version__  # noqa
 from argument_parser import ArgumentParserMixin
 from async_service import AsyncServiceMixin
 from logger import LoggerMixin
 from msgpack import MsgPackMixin
-import inspect
-
-from __version__ import __version__  # noqa
+from subscribers import NatsSubscriberBase
 
 __lang__ = 'python3'
 
