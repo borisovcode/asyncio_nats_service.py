@@ -3,7 +3,7 @@ import unittest
 from service import NatsServiceBase
 
 
-class TestService(unittest.TestCase):
+class TestService(unittest.IsolatedAsyncioTestCase):
     svc: NatsServiceBase
 
     def setUp(self) -> None:
