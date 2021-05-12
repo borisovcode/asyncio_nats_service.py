@@ -95,7 +95,7 @@ class NatsServiceBase(ArgumentParserMixin, MsgPackMixin, LoggerMixin, AsyncServi
         :param subject: тема сообщения, например 'my.task'
         :param queue: название очереди сообщений для горизонтального масштабирования
         :param handler: обработчик (callback функция)
-        :return: ssid подписки
+        :return: **ssid** подписки
         """
         if handler is None:
             handler = self._nats_get_handler(subject)
