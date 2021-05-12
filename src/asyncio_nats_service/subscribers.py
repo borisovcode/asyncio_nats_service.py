@@ -7,7 +7,7 @@ class NatsSubscriberBase(object):
     """
     Base class for NATS subscribe handlers as object
 
-    NatsService using message_handler from a instance of this class as callback function
+    NatsService using `message_handler` from a instance of this class as callback function
     """
 
     nats_client: NATS  #: nats_client from NatsService
@@ -19,5 +19,5 @@ class NatsSubscriberBase(object):
         self.nats_client = nats_client
 
     async def message_handler(self, msg):
-        """Обязательный обработчик сообщений"""
+        """Method as callback subscriber function"""
         raise NotImplementedError('subclasses of NatsSubscriber must provide a message_handler() method')

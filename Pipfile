@@ -8,6 +8,7 @@ asyncio-nats-client = "*"
 msgpack = "*"
 
 [dev-packages]
+sphinx = "*"
 
 [requires]
 python_version = "3.9"

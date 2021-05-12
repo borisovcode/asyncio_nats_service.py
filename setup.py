@@ -7,7 +7,7 @@ ROOT_DIR = pathlib.Path(__file__).parent.resolve()
 long_description = (ROOT_DIR / 'README.md').read_text(encoding='utf-8')
 
 about = {}
-exec((ROOT_DIR / 'asyncio_nats_service' / '__version__.py').read_text(encoding='utf-8'), about)
+exec((ROOT_DIR / 'src' / 'asyncio_nats_service' / '__version__.py').read_text(encoding='utf-8'), about)
 
 setup(
     name='asyncio_nats_service',  # Required
