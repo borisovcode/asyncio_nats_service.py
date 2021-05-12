@@ -19,7 +19,7 @@ class NatsServiceBase(ArgumentParserMixin, MsgPackMixin, LoggerMixin, AsyncServi
     Добавляется параметр командной строки --nats-servers.
     Оборачиваются функции publish и subscribe для NATS, при это для подписки автоматически может формироваться имя обработчика.
 
-    Пример:
+    Example: ::
 
         svc = NetcatService()
         svc.async_run_until_complete()

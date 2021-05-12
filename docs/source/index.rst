@@ -7,10 +7,12 @@ Welcome to asyncio nats service's documentation!
 ================================================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :caption: Contents:
 
-
+.. automodule:: asyncio_nats_service.service
+    :members:
+    :show-inheritance:
 
 Indices and tables
 ==================
