@@ -76,7 +76,7 @@ class NatsServiceBase(ArgumentParserMixin, MsgPackMixin, LoggerMixin, AsyncServi
         """
         handler = None
         if subject in self._nats_subject_handler:
-            if isinstance(self._nats_subject_handler[subject], NatsSubscriberBase):
+            if issubclass(self._nats_subject_handler[subject], NatsSubscriberBase):
                 obj = self._nats_subject_handler[subject](nats_client=self.nats_client, async_loop=self.async_loop)
                 self._nats_subject_handler[subject] = obj.message_handler
             elif inspect.isfunction(self._nats_subject_handler[subject]):
