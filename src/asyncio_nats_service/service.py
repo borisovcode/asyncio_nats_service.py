@@ -78,13 +78,16 @@ class NatsServiceBase(ArgumentParserMixin, MsgPackMixin, LoggerMixin, AsyncServi
         if subject in self._nats_subject_handler:
             if issubclass(self._nats_subject_handler[subject], NatsSubscriberBase):
                 obj = self._nats_subject_handler[subject](nats_client=self.nats_client, async_loop=self.async_loop)
-                self._nats_subject_handler[subject] = obj.message_handler
-            elif inspect.isfunction(self._nats_subject_handler[subject]):
+                handler = obj.message_handler
+                self._nats_subject_handler[subject] = handler
+            elif inspect.isfunction(self._nats_subject_handler[subject]) or inspect.ismethod(
+                    self._nats_subject_handler[subject]):
                 handler = self._nats_subject_handler[subject]
             else:
                 raise TypeError(f'unknown "{subject}" handler (may be a function or a NatsScribeBase subclass')
         else:
-            handler_name = '_nats_handler_' + subject.replace('.', '_').replace('*', '__star__').replace('>', '__next__')
+            handler_name = '_nats_handler_' + subject.replace('.', '_').replace('*', '__star__').replace('>',
+                                                                                                         '__next__')
             handler = getattr(self, handler_name)
         return handler
 
